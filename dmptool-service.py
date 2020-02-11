@@ -18,8 +18,8 @@ class MyService():
             logging.info("I'm working...");
             tasks = self.db.tasks.find({"status":"pending"});
             for task in tasks:
-                logging.info("Processing task ")
-                json_query = {"name": task['dmp']};
+                logging.info("Processing task with dmp id:"+str(task['dmp']))
+                json_query = {"_id": str(task['dmp'])};
                 dmp = self.db.dmptool.find_one(json_query);
                 if (dmp!=None):
                     logging.info("Handling dmp "+str(dmp['_id']));
