@@ -9,7 +9,7 @@ class MyService():
     def __init__(self, *args, **kwargs):
 
         logging.basicConfig(handlers=[logging.StreamHandler(),logging.FileHandler("debug.log")], level=logging.DEBUG)
-        self.client = MongoClient('mongodb://localhost:27017/');
+        self.client = MongoClient('mongodb://mongodb:27017/');
         self.db = self.client.dmptool;
         logging.info("Initiating mongo database");
 
