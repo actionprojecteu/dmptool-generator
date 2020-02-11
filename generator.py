@@ -22,7 +22,10 @@ class Generator:
         article = ET.Element("article",xmlns="http://docbook.org/ns/docbook");
 
         info = ET.SubElement(article, "info");
-        title = ET.SubElement(info,"title").text = "Data Management Plan: Project "+self.dmp['project'];
+        if (self.dmp['project']!=None):
+            title = ET.SubElement(info,"title").text = "Data Management Plan: Project "+self.dmp['project'];
+        else:
+            title = ET.SubElement(info, "title").text = "Data Management Plan";
         author = ET.SubElement(info, "author");
         personname = ET.SubElement(author,"personname");
         firstname = ET.SubElement(personname,"user");
