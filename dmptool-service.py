@@ -25,6 +25,7 @@ class MyService():
                     logging.info("Handling dmp "+str(dmp['_id']));
                     generator = Generator(dmp);
                     generator.generate();
+                    logging.info("Updating database");
                     self.db.tasks.update({"dmp":str(dmp['_id'])},{"status":"done"});
 
 
