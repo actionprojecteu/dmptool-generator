@@ -19,7 +19,8 @@ class MyService():
             tasks = self.db.tasks.find({"status":"pending"});
             for task in tasks:
                 logging.info("Processing task with dmp id:"+str(task['dmp']))
-                json_query = {"_id": str(task['dmp'])};
+                json_query = {"_id": task['dmp']};
+                logging.info("Looking for DMP "+json_query);
                 dmp = self.db.dmptool.find_one(json_query);
                 if (dmp!=None):
                     logging.info("Handling dmp "+str(dmp['_id']));
@@ -27,6 +28,8 @@ class MyService():
                     generator.generate();
                     logging.info("Updating database");
                     self.db.tasks.update({"dmp":str(dmp['_id'])},{"status":"done"});
+                else:
+                    logging.info("No DMP found with this id")
 
 
             time.sleep(5)
