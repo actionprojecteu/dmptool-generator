@@ -1,6 +1,7 @@
 import logging
 import time
 from pymongo import MongoClient;
+from bson import ObjectId
 
 from generator import Generator;
 
@@ -19,7 +20,7 @@ class MyService():
             tasks = self.db.tasks.find({"status":"pending"});
             for task in tasks:
                 logging.info("Processing task with dmp id:"+str(task['dmp']))
-                json_query = {"_id": task['dmp']};
+                json_query = {"_id": ObjectId(task['dmp'])};
                 logging.info("Looking for DMP "+str(json_query));
                 dmp = self.db.dmptool.find_one(json_query);
                 if (dmp!=None):
