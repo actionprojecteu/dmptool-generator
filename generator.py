@@ -48,11 +48,17 @@ class Generator:
         ET.SubElement(section_data_summary,"title").text="Data Summary";
 
         ET.SubElement(section_data_summary,"strong").text="What is the purpose of the data collection/generation and its relation to the objectives of the project?"
-        ET.SubElement(section_data_summary,"para").text=self.dmp['purpose']
+        if (self.dmp['purpose']!=None):
+            ET.SubElement(section_data_summary,"para").text=self.dmp['purpose']
+        else:
+            ET.SubElement(section_data_summary, "para").text = "No purpose defined"
 
         ET.SubElement(section_data_summary,
                       "strong").text = "What types and formats of data will the project generate/collect?"
-        ET.SubElement(section_data_summary, "para").text = self.dmp['description']
+        if(self.dmp['description']):
+            ET.SubElement(section_data_summary, "para").text = self.dmp['description']
+        else:
+            ET.SubElement(section_data_summary, "para").text = "No description defined"
 
         ET.SubElement(section_data_summary,
                       "strong").text = "Will you re-use any existing data and how?"
