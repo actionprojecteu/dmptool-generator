@@ -1,5 +1,6 @@
 import logging
 import time
+import subprocess
 from pymongo import MongoClient;
 from bson import ObjectId
 
@@ -28,9 +29,31 @@ class MyService():
                     generator = Generator(dmp);
                     generator.generate();
                     logging.info("Updating database");
+                    docbook_name= "docbook-"+str(dmp['_id'])+".xml";
                     docx_name = "docbook-"+str(dmp['_id'])+".docx";
+                    logging.info("Generating DOCX file:"+docx_name);
+                    cp = subprocess.run(["pandoc","--from","docbook","--to","docx","--output","/app/resources/"+docx_name,docbook_name]);
+                    return_code_docx = cp.returncode;
+                    if (return_code_docx==0):
+                        logging.info("DOCX file generated");
+                    else:
+                        logging.info("Problem to generate DOCX file:"+str(return_code_docx));
+                        logging.info("Message:" + str(cp.stderr));
                     pdf_name = "docbook-"+str(dmp['_id'])+".pdf";
-                    self.db.tasks.update({"dmp":str(dmp['_id'])},{"status":"done","url_docx":docx_name,"url_pdf":pdf_name});
+                    logging.info("Generating PDF file:" + pdf_name);
+                    cp = subprocess.run(["pandoc", "--from","docbook","--to","latex", "--output","/app/resources/"+pdf_name,docbook_name]);
+                    return_code_pdf = cp.returncode;
+                    if (return_code_pdf==0):
+                        logging.info("DOCX file generated");
+                    else:
+                        logging.info("Problem to generate PDF file:"+str(return_code_pdf));
+                        logging.info("Message:" + str(cp.stderr));
+
+                    if (return_code_docx!=0 or return_code_pdf!=0):
+                        self.db.tasks.update({"dmp": str(dmp['_id'])},
+                                             {"status": "error"});
+                    else:
+                        self.db.tasks.update({"dmp":str(dmp['_id'])},{"status":"done","url_docx":docx_name,"url_pdf":pdf_name});
                 else:
                     logging.info("No DMP found with this id")
 
