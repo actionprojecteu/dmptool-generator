@@ -5,8 +5,6 @@ import logging
 import json;
 import pprint;
 
-
-
 class Generator:
     def __init__(self, dmp):
         self.dmp = dmp;
@@ -87,7 +85,6 @@ class Generator:
 
 
         ET.SubElement(section_data_summary, "strong").text = "What is the expected size of the data?"
-
 
         if (self.dmp['number_contributions']!=None and self.dmp['contribution_size']!=None):
             total_size_month = float(self.dmp['number_contributions']) * float(self.dmp['contribution_size']) * 30;
