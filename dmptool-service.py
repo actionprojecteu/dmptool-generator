@@ -10,7 +10,7 @@ from generator import Generator;
 class MyService():
     def __init__(self, *args, **kwargs):
 
-        logging.basicConfig(handlers=[logging.StreamHandler(),logging.FileHandler("debug.log")], level=logging.DEBUG)
+        logging.basicConfig(handlers=[logging.StreamHandler(),logging.FileHandler("debug.log")], format='%(asctime)s %(levelname)-8s %(message)s',level=logging.DEBUG,datefmt='%Y-%m-%d %H:%M:%S')
         self.client = MongoClient('mongodb://mongodb:27017/');
         self.db = self.client.dmptool;
         logging.info("Initiating mongo database");
@@ -46,7 +46,7 @@ class MyService():
                         cp = subprocess.run(["pandoc", "--from","docbook","--to","latex", "--output","/app/resources/"+pdf_name,docbook_name]);
                         return_code_pdf = cp.returncode;
                         if (return_code_pdf==0):
-                            logging.info("DOCX file generated");
+                            logging.info("PDF file generated");
                         else:
                             logging.info("Problem to generate PDF file:"+str(return_code_pdf));
                             logging.info("Message:" + str(cp.stderr));
