@@ -56,8 +56,7 @@ class MyService():
                         else:
                             self.db.tasks.update({"dmp":str(dmp['_id'])},{"$set":{"status":"done","url_docx":docx_name,"url_pdf":pdf_name}});
                     except ValueError:
-                        logging.error("Error to parse float:" + self.dmp['number_contributions'] + " " + self.dmp[
-                        'contribution_size']);
+                        logging.error("Error to parse float ");
                         self.db.tasks.update({"dmp": str(dmp['_id'])}, {"$set": {"status": "error"}});
                 else:
                     logging.info("No DMP found with this id")
