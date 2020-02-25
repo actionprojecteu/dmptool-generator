@@ -229,7 +229,7 @@ class Generator:
         if (self.dmp["license"]!='Others'):
             ET.SubElement(section_data_reuse,"para").text="The data have been published with the following license";
         else:
-            ET.SubElement(section_data_reuse,"para").text="The data have been published with an specific license. Terms and conditions are: "+self.dmp["license_text"];
+            ET.SubElement(section_data_reuse,"para").text="The data have been published with an specific license. Terms and conditions are: "+self.dmp["conditions"];
 
         sharing_text=""
         ET.SubElement(section_data_reuse,"strong").text="When will the data be made available for reuse? If an embargo is sought to give time to publish or seek patents, specify why and how long this will apply, bearing in mind that research data should be made available as soon as possible.";
