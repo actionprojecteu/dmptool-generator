@@ -52,12 +52,12 @@ class MyService():
                             logging.info("Message:" + str(cp.stderr));
 
                         if (return_code_docx!=0 or return_code_pdf!=0):
-                            self.db.tasks.update({"dmp": str(dmp['_id'])},{"$set":{"status": "error"}});
+                            self.db.tasks.update({"_id": ObjectId(task['_id'])},{"$set":{"status": "error"}});
                         else:
-                            self.db.tasks.update({"dmp":str(dmp['_id'])},{"$set":{"status":"done","url_docx":docx_name,"url_pdf":pdf_name}});
+                            self.db.tasks.update({"_id": ObjectId(task['_id'])},{"$set":{"status":"done","url_docx":docx_name,"url_pdf":pdf_name}});
                     except ValueError:
                         logging.error("Error to parse float ");
-                        self.db.tasks.update({"dmp": str(dmp['_id'])}, {"$set": {"status": "error"}});
+                        self.db.tasks.update({"_id": ObjectId(task['_id'])}, {"$set": {"status": "error"}});
                 else:
                     logging.info("No DMP found with this id")
 
