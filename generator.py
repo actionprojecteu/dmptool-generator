@@ -86,9 +86,8 @@ class Generator:
 
         ET.SubElement(section_data_summary, "strong").text = "What is the expected size of the data?"
 
-        if (self.dmp['number_contributions']!=None and self.dmp['contribution_size']!=None):
-            total_size_month = float(self.dmp['number_contributions']) * float(self.dmp['contribution_size']) * 30;
-            ET.SubElement(section_data_summary, "para").text = "The number of contributions estimated per day is "+str(self.dmp['number_contributions'])+". With a size per contribution of "+str(self.dmp['contribution_size'])+" the project will generate "+str(total_size_month)+"MB per month";
+        if (self.dmp['size_datasets']!=None):
+            ET.SubElement(section_data_summary,"para").text = "The estimated size for the dataset is "+self.dmp['size_datasets']
         else:
             ET.SubElement(section_data_summary, "para").text = "We haven´t a clear estimation of the amount of data generated in the project."
 
