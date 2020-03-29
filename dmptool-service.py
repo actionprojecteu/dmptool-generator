@@ -38,23 +38,13 @@ class MyService():
                         return_code_docx = cp.returncode;
                         if (return_code_docx==0):
                             logging.info("DOCX file generated");
+                            self.db.tasks.update({"_id": ObjectId(task['_id'])}, {
+                                "$set": {"status": "done", "url_docx": docx_name}});
                         else:
                             logging.info("Problem to generate DOCX file:"+str(return_code_docx));
                             logging.info("Message:" + str(cp.stderr));
-                        pdf_name = "docbook-"+str(dmp['_id'])+".pdf";
-                        logging.info("Generating PDF file:" + pdf_name);
-                        cp = subprocess.run(["pandoc", "--from","docbook","--to","latex", "--output","/app/resources/"+pdf_name,docbook_name]);
-                        return_code_pdf = cp.returncode;
-                        if (return_code_pdf==0):
-                            logging.info("PDF file generated");
-                        else:
-                            logging.info("Problem to generate PDF file:"+str(return_code_pdf));
-                            logging.info("Message:" + str(cp.stderr));
+                            self.db.tasks.update({"_id": ObjectId(task['_id'])}, {"$set": {"status": "error"}});
 
-                        if (return_code_docx!=0 or return_code_pdf!=0):
-                            self.db.tasks.update({"_id": ObjectId(task['_id'])},{"$set":{"status": "error"}});
-                        else:
-                            self.db.tasks.update({"_id": ObjectId(task['_id'])},{"$set":{"status":"done","url_docx":docx_name,"url_pdf":pdf_name}});
                     except ValueError:
                         logging.error("Error to parse float ");
                         self.db.tasks.update({"_id": ObjectId(task['_id'])}, {"$set": {"status": "error"}});
