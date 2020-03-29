@@ -86,10 +86,11 @@ class Generator:
 
         ET.SubElement(section_data_summary, "strong").text = "What is the expected size of the data?"
 
-        if (self.dmp['size_dataset']!=None):
-            ET.SubElement(section_data_summary,"para").text = "The estimated size for the dataset is "+self.dmp['size_dataset']
-        else:
-            ET.SubElement(section_data_summary, "para").text = "We haven´t a clear estimation of the amount of data generated in the project."
+        if ('size_dataset' in self.dmp):
+            if (self.dmp['size_dataset']!=None):
+                ET.SubElement(section_data_summary,"para").text = "The estimated size for the dataset is "+self.dmp['size_dataset']
+            else:
+                ET.SubElement(section_data_summary, "para").text = "We haven´t a clear estimation of the amount of data generated in the project."
 
         ET.SubElement(section_data_summary,"strong").text = "To whom might it be useful ('data utility')?"
 
