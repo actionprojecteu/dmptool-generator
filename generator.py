@@ -34,13 +34,8 @@ class Generator:
 
         section_executive = ET.SubElement(article,"section",id="executive");
         title_executive = ET.SubElement(section_executive,"title").text = "Executive Summary"
-        ET.SubElement(section_executive,"para").text="This document serves as the data management plan for the ACTION project pilots. It consists of a "\
-        "number of individual data management plans, covering the pilot projects that form part of the "\
-        "ACTION consortium, as well as additional data management plans for the datasets to be gathered "\
-        "and maintained as part of the work package activities in WP3 (Open Call), WP5 (Socio-Technical "\
-        "Toolkit) and WP6 (Impact Assessment). At the time of production of this DMP, no further datasets "\
-        "are foreseen. Should additional datasets be required or produced as part of ACTION, updated "\
-        "versions of this DMP will be produced and submitted as necessary."
+        ET.SubElement(section_executive,"para").text="This document serves as the data management plan for the ACTION project pilots. " \
+        "This document has been generated automatically with a tool used to generate DMPs. "
 
         section_body = ET.SubElement(article,"section", id="body");
         ET.SubElement(section_body,"title").text="Data Management Plan";
@@ -74,7 +69,7 @@ class Generator:
         text_string = "At this moment, we are not generating data in our project"
 
         if(self.dmp['use_data'] == 'Yes'):
-            text_string = "At this moment, we are generating data in our project"
+            text_string = "At this moment, we are generating data in our project "
             if (self.dmp['use_data_url'] != None):
                 text_string = text_string + " and it can be found here "+self.dmp['use_data_url'];
             else:
@@ -106,19 +101,34 @@ class Generator:
 
         section_data_findable = ET.SubElement(section_fair_data,"sect2");
         ET.SubElement(section_data_findable,"title").text="Making data findable, including provisions for metadata";
-        ET.SubElement(section_data_findable,"para").text="A Digital Object Identifier (DOI) will be generated using Zenodo to make it findable. This dataset will be findable from our Zenodo Community (http://zenodo.org/communities/actionprojecteu) and from our Data Portal";
+
+        ET.SubElement(section_data_findable,"strong").text="Are the data produced and/or used in the project discoverable with metadata, identifiable and locatable by means of a standard identification mechanism (e.g. persistent and unique identifiers such as Digital Object Identifiers)? What naming conventions do you follow?"
+        if (self.dmp['sharing'] == 'Yes'):
+            ET.SubElement(section_data_findable,"para").text="A Digital Object Identifier (DOI) will be generated using Zenodo to make it findable. This dataset will be findable from our Zenodo Community (http://zenodo.org/communities/actionprojecteu) and from our Data Portal";
+        else:
+            ET.SubElement(section_data_findable,"para").text = "At this moment, we are not going to generate a DOI";
 
         ET.SubElement(section_data_findable,"strong").text="Will search keywords be provided that optimize possibilities for re-use?";
         if ('keywords' in self.dmp):
-            ET.SubElement(section_data_findable,"para").text="We have identified the following keywords:"+self.dmp['keywords'];
+            if (self.dmp['keywords'] != None):
+                ET.SubElement(section_data_findable,"para").text="We have identified the following keywords:"+self.dmp['keywords'];
+            else:
+                ET.SubElement(section_data_findable,"para").text="We have not identified keywords to optimize our dataset for re-using it"
         else:
             ET.SubElement(section_data_findable,"para").text="We have not identified keywords to optimize our dataset for re-using it"
 
         ET.SubElement(section_data_findable,"strong").text="Do you provide clear version numbers?";
-        ET.SubElement(section_data_findable,"para").text="For this pilot, we will produce a unique data set that will be periodically updated. So we will use versioning for the dataset. Platforms like Zenodo could provide us the data versioning, so that we do not have to track versions ourselves."
+        if (self.dmp['sharing'] == 'Yes'):
+            ET.SubElement(section_data_findable,"para").text="For this pilot, we will produce a unique data set that will be periodically updated. So we will use versioning for the dataset. Platforms like Zenodo could provide us the data versioning, so that we do not have to track versions ourselves."
+        else:
+            ET.SubElement(section_data_findable, "para").text = "At this moment, we are not going to provide a version number of our data"
 
         ET.SubElement(section_data_findable, "strong").text = "What metadata will be created? In case metadata standards do not exist in your discipline, please outline what type of metadata will be created and how. We will also include metadata defined";
-        ET.SubElement(section_data_findable, "para").text = "We will also include metadata defined by CKAN. This includes (title, description,tags,license, source, version, author email and some another custom fields)";
+
+        if (self.dmp['sharing'] == 'Yes'):
+            ET.SubElement(section_data_findable, "para").text = "We will use the schema provided by Zenodo. This includes at least Zenodo communities (OpenAire and actionprojecteu), type of resource, title, description, authors, keywords,license, version and grants)";
+        else:
+            ET.SubElement(section_data_findable, "para").text = "We are not going to publish our data so no metadata will be provided"
 
         section_data_accesible = ET.SubElement(section_fair_data,"sect2");
         ET.SubElement(section_data_accesible,"title").text="Making data openly accessible";
@@ -138,19 +148,31 @@ class Generator:
         ET.SubElement(section_data_accesible,"para").text="There is no provision to keep the data closed and no specific beneficiaries are foreseen.";
 
         ET.SubElement(section_data_accesible,"strong").text="How will the data be made accessible (e.g. by deposition in a repository)?"
-        ET.SubElement(section_data_accesible,"para").text="We will set up a web infrastructure and upload periodically our data to a public repository (i.e. Zenodo). Our data Portal (based on CKAN) will be used for searching but not physically store the data, rather it will keep a link to the public repository."
+        if (self.dmp["sharing"] == 'Yes'):
+            ET.SubElement(section_data_accesible,"para").text="Data will be available in our data portal (https://data.actionproject.eu) as well as in our community in Zenodo (https://zenodo.org/communities/actionprojecteu).";
+        else:
+            ET.SubElement(section_data_accesible, "para").text = "We are not going to publish our data in a public repository"
 
         ET.SubElement(section_data_accesible,"strong").text="What methods or software tools are needed to access the data?";
-        ET.SubElement(section_data_accesible,"para").text="An ordinary web browser will be enough to download data from our data portal or public repository. Datasets will be in CSV. Optionally, the user could use our search facility of our data portal.";
+        if (self.dmp["sharing"] == 'Yes'):
+            ET.SubElement(section_data_accesible,"para").text="An ordinary web browser will be enough to download data from our data portal or public repository. Datasets will be in CSV. Optionally, the user could use our search facility of our data portal.";
+        else:
+            ET.SubElement(section_data_accesible, "para").text ="Data won't be accesible"
 
         ET.SubElement(section_data_accesible,"strong").text="Is documentation about the software needed to access the data included?";
-        ET.SubElement(section_data_accesible,"para").text="The API of Zenodo or our data portal can be used to consult the different datasets deposit in these repositories. Plus, there are open software tools available to process datasets";
+        if (self.dmp["sharing"] == 'Yes'):
+            ET.SubElement(section_data_accesible,"para").text="The API of Zenodo or our data portal can be used to consult the different datasets deposit in these repositories. Plus, there are open software tools available to process datasets";
+        else:
+            ET.SubElement(section_data_accesible, "para").text = "Data won't be available in a public repository"
 
         ET.SubElement(section_data_accesible,"strong").text="Is it possible to include the relevant software (e.g. in open source code)?";
         ET.SubElement(section_data_accesible,"para").text="Examples querying and using data will be uploaded to a public repository (i.e GitHub).";
 
         ET.SubElement(section_data_accesible,"strong").text="Where will the data and associated metadata, documentation and code be deposited? Preference should be given to certified repositories which support open access where possible.";
-        ET.SubElement(section_data_accesible,"para").text="Data will be stored in a public repository, our data portal providing search facilities. Documentation will be available on our website (http://actionproject.eu). The code will be uploaded to our public repository in Github. (https://github.com/actionprojecteu)";
+        if (self.dmp["sharing"] == 'Yes'):
+            ET.SubElement(section_data_accesible,"para").text="Data will be stored in a public repository, our data portal providing search facilities. Documentation will be available on our website (http://actionproject.eu). The code will be uploaded to our public repository in Github. (https://github.com/actionprojecteu)";
+        else:
+            ET.SubElement(section_data_accesible, "para").text ="Data won't be available in a public repository"
 
         ET.SubElement(section_data_accesible,"strong").text="Have you explored appropriate arrangements with the identified repository?";
         ET.SubElement(section_data_accesible,"para").text="No.";
