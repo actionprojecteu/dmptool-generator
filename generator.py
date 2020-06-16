@@ -330,7 +330,7 @@ class Generator:
             ethical_text = "Personal information about users will not be published in our public repositories.";
         if (self.dmp["protected_geolocation"]=='Yes'):
             ethical_text = ethical_text +"Plus, a obfuscation process is applied to avoid the location of sensitive species."+self.dmp["protected_geolocation_text"];
-
+        ET.SubElement(section_ethical_aspects, "strong").text = ethical_text;
         section_others = ET.SubElement(section_body,"sect1");
         ET.SubElement(section_others,"title").text="Other issues";
         ET.SubElement(section_others,"strong").text="Do you make use of other national/funder/sectorial/departmental procedures for data management? If yes, which ones?";
